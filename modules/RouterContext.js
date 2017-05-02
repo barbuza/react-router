@@ -1,20 +1,19 @@
 import invariant from 'invariant'
 import React from 'react'
+import { array, func, object } from 'prop-types'
 
 import deprecateObjectProperties from './deprecateObjectProperties'
 import getRouteParams from './getRouteParams'
 import { isReactChildren } from './RouteUtils'
 import warning from './routerWarning'
 
-const { array, func, object } = React.PropTypes
-
 /**
  * A <RouterContext> renders the component tree for a given router state
  * and sets the history object and the current location in context.
  */
-const RouterContext = React.createClass({
+export default class RouterContext extends React.Component {
 
-  propTypes: {
+  static propTypes = {
     history: object,
     router: object.isRequired,
     location: object.isRequired,
@@ -22,19 +21,17 @@ const RouterContext = React.createClass({
     params: object.isRequired,
     components: array.isRequired,
     createElement: func.isRequired
-  },
+  }
 
-  getDefaultProps() {
-    return {
-      createElement: React.createElement
-    }
-  },
+  static defaultProps = {
+    createElement: React.createElement
+  }
 
-  childContextTypes: {
+  static childContextTypes = {
     history: object,
     location: object.isRequired,
     router: object.isRequired
-  },
+  }
 
   getChildContext() {
     let { router, history, location } = this.props
@@ -53,11 +50,11 @@ const RouterContext = React.createClass({
     }
 
     return { history, location, router }
-  },
+  }
 
   createElement(component, props) {
     return component == null ? null : this.props.createElement(component, props)
-  },
+  }
 
   render() {
     const { history, location, routes, params, components } = this.props
@@ -116,6 +113,4 @@ const RouterContext = React.createClass({
     return element
   }
 
-})
-
-export default RouterContext
+}

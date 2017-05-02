@@ -1,39 +1,35 @@
 import React from 'react'
+import { string, object } from 'prop-types'
 import warning from './routerWarning'
 import invariant from 'invariant'
 import Redirect from './Redirect'
 import { falsy } from './InternalPropTypes'
 
-const { string, object } = React.PropTypes
 
 /**
  * An <IndexRedirect> is used to redirect from an indexRoute.
  */
-const IndexRedirect = React.createClass({
+export default class IndexRedirect extends React.Component {
 
-  statics: {
-
-    createRouteFromReactElement(element, parentRoute) {
-      /* istanbul ignore else: sanity check */
-      if (parentRoute) {
-        parentRoute.indexRoute = Redirect.createRouteFromReactElement(element)
-      } else {
-        warning(
-          false,
-          'An <IndexRedirect> does not make sense at the root of your route config'
-        )
-      }
+  static createRouteFromReactElement(element, parentRoute) {
+    /* istanbul ignore else: sanity check */
+    if (parentRoute) {
+      parentRoute.indexRoute = Redirect.createRouteFromReactElement(element)
+    } else {
+      warning(
+        false,
+        'An <IndexRedirect> does not make sense at the root of your route config'
+      )
     }
+  }
 
-  },
-
-  propTypes: {
+  static propTypes = {
     to: string.isRequired,
     query: object,
     state: object,
     onEnter: falsy,
     children: falsy
-  },
+  }
 
   /* istanbul ignore next: sanity check */
   render() {
@@ -43,6 +39,4 @@ const IndexRedirect = React.createClass({
     )
   }
 
-})
-
-export default IndexRedirect
+}
